@@ -3,19 +3,22 @@
 
 Main tasks:
   - Read options
-  - Init valueholder
+  - Init scorecard
   - Init interacter
-  - Init appropriate display with interacter and valueholder
-  - Init logic with interacter and valueholder
+  - Init appropriate display with interacter and scorecard
+  - Init logic with scorecard
+  - Register logic as listener on interacter
   - ???
   - Start UI loop
 
 
 ### INTERFACES ###
 
-Displayer (handles display and input, better name?):
+Interfacer:
   (one implementation for gui, one for cli)
+  - setScorecard
   - setInteracter
+  - init
   - update
 
 
@@ -23,12 +26,13 @@ Displayer (handles display and input, better name?):
 
 UserEvent:
   - action
+  - extra
 
 Interacter:
   - addListener
   (method for each available action that sends event to registered)
 
-ValueHolder:
+Scorecard:
   (public fields for each relevant piece of data)
   - ticks
   - clicks
@@ -37,6 +41,5 @@ ValueHolder:
 Logic:
   (main functioning piece)
   Takes in:
-    - display
-    - interacter (registers self as listener)
+    - scorecard
 

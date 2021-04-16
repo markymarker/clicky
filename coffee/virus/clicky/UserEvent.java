@@ -7,26 +7,26 @@ package coffee.virus.clicky;
  */
 public class UserEvent {
 
-	private String action;
+	private int action;
 	private int extra = 0;
 
 
 	/**
 	 * Create a new UserEvent.
 	 *
-	 * @param action The action string identifying this event
+	 * @param action The action code identifying this event
 	 */
-	public UserEvent(String action){
+	public UserEvent(int action){
 		this.action = action;
 	}
 
 	/**
 	 * Create a new UserEvent.
 	 *
-	 * @param action The action string identifying this event
+	 * @param action The action code identifying this event
 	 * @param extra An extra context-sensitive piece of information
 	 */
-	public UserEvent(String action, int extra){
+	public UserEvent(int action, int extra){
 		this.action = action;
 		this.extra = extra;
 	}
@@ -37,7 +37,7 @@ public class UserEvent {
 	 *
 	 * @return The action identifier
 	 */
-	public String getAction(){
+	public int getAction(){
 		return action;
 	}
 

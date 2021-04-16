@@ -18,7 +18,11 @@ class Main {
 	public static void main(String[] args){
 		// TODO: Add options support
 
-		Interfacer iface = new Interfacer(){ public void setScorecard(Scorecard s){} }; // TODO
+		// TODO: Replace with an actual interfacer once they're created
+		Interfacer iface = new Interfacer(){
+			public void setScorecard(Scorecard s){}
+			public void setInteracter(Interacter i){}
+		};
 
 		Main clicky = new Main();
 		clicky.init(iface);
@@ -39,7 +43,13 @@ class Main {
 
 	/**
 	 * Initialize.
-	 * TODO
+	 * Set up all the game components and hand everybody what they need. Once
+	 * everybody is present, run any further sub-initialization routines. The
+	 * Interfacer to be used is provided as a parameter so that the desired
+	 * interface can be specified in an option that the option handler will
+	 * then select the appropriate backing class for.
+	 *
+	 * @param iface I face? No, you face!
 	 */
 	private void init(Interfacer iface){
 		interfacer = iface;
@@ -49,8 +59,11 @@ class Main {
 		logic = new Logic(scorecard);
 
 		interfacer.setScorecard(scorecard);
+		interfacer.setInteracter(interact);
 
 		interact.addListener(logic);
+
+		iface.init();
 	}
 
 	/**

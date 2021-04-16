@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * This class defines the available interactions and provides and interface to
  * trigger them.
  */
-class Interacter {
+public class Interacter {
 
-	public static final String ACTION_CLICK = "click";
-	public static final String ACTION_PURCHASE = "purchase";
+	public static final int ACTION_CLICK = 0;
+	public static final int ACTION_PURCHASE = 1;
 
 
 	private ArrayList<Listener> listeners;
