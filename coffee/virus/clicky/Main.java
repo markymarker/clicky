@@ -2,6 +2,8 @@ package coffee.virus.clicky;
 
 import coffee.virus.clicky.interfaces.Interfacer;
 
+import coffee.virus.clicky.ui.simple.SimpleUI;
+
 /**
  * Main class, entry point.
  * Interprets options and gets things going.
@@ -18,11 +20,14 @@ class Main {
 	public static void main(String[] args){
 		// TODO: Add options support
 
+		/*
 		// TODO: Replace with an actual interfacer once they're created
 		Interfacer iface = new Interfacer(){
 			public void setScorecard(Scorecard s){}
 			public void setInteracter(Interacter i){}
 		};
+		*/
+		Interfacer iface = new SimpleUI();
 
 		Main clicky = new Main();
 		clicky.init(iface);
