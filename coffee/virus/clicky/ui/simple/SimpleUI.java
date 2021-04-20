@@ -24,6 +24,8 @@ public class SimpleUI implements Interfacer {
 
 
 	public SimpleUI(){
+		display = new DisplayArea();
+		controls = new ControlArea();
 	}
 
 
@@ -32,8 +34,8 @@ public class SimpleUI implements Interfacer {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setLocationRelativeTo(null);
 
-		display = new DisplayArea();
-		controls = new ControlArea();
+		display.init();
+		controls.init();
 
 		// TODO: Any other swing init on event thread
 	}
@@ -47,6 +49,10 @@ public class SimpleUI implements Interfacer {
 	public void setInteracter(Interacter i){
 		interacter = i;
 		controls.setInteracter(i);
+	}
+
+	public void update(){
+		// TODO: Update counts, fields, etc.
 	}
 
 }

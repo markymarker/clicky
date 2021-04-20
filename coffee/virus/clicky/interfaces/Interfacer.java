@@ -31,6 +31,14 @@ public interface Interfacer {
 	void setInteracter(Interacter interact);
 
 	/**
+	 * Update the display.
+	 * This will be called when state has updated and the ui should update in
+	 * response. When this is called, implementers should re-read the state
+	 * object they are holding and refresh any displays as appropriate.
+	 */
+	void update();
+
+	/**
 	 * Prepare for the show.
 	 * If needed, any initialization of graphics, etc should happen in this
 	 * method, which will be called as part of the initialization of the rest

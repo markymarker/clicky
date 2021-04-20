@@ -20,13 +20,6 @@ class Main {
 	public static void main(String[] args){
 		// TODO: Add options support
 
-		/*
-		// TODO: Replace with an actual interfacer once they're created
-		Interfacer iface = new Interfacer(){
-			public void setScorecard(Scorecard s){}
-			public void setInteracter(Interacter i){}
-		};
-		*/
 		Interfacer iface = new SimpleUI();
 
 		Main clicky = new Main();
@@ -39,6 +32,8 @@ class Main {
 
 	// //////////////// //
 	// INSTANCE SECTION //
+
+	private boolean running = false;
 
 	private Logic logic;
 	private Interfacer interfacer;
@@ -61,7 +56,7 @@ class Main {
 
 		scorecard = new Scorecard();
 		interact = new Interacter();
-		logic = new Logic(scorecard);
+		logic = new Logic(scorecard, iface);
 
 		interfacer.setScorecard(scorecard);
 		interfacer.setInteracter(interact);
@@ -77,6 +72,45 @@ class Main {
 	 */
 	private void clickLoop(){
 		System.out.println("No loop yet :(");
+
+		int tmpcount = 0;
+		int clicktastrophes = 0;
+		StringBuilder msgs = new StringBuilder();
+		long lasttickstart = System.currentTimeMillis();
+
+		running = true;
+
+		try {
+			while(running){
+				long diff = Math.min(1000, (lasttickstart + 1000) - System.currentTimeMillis());
+				if(diff > 0){
+					try { Thread.sleep(diff); }
+					catch(Exception e){
+						++clicktastrophes;
+						msgs.append(e.getMessage() + "\n");
+						if(clicktastrophes > 8) break;
+					}
+				}
+
+				lasttickstart = System.currentTimeMillis();
+
+				logic.runTick(interact);
+
+				// TODO: Remove when more built out
+				System.out.println(tmpcount++);
+				if(tmpcount >= 5)
+					throw new Exception("That's all for now, folks");
+			}
+		} catch(Exception e) {
+			System.err.println("Massive click catastrophe occurred: " + e.getMessage());
+		}
+
+		if(clicktastrophes > 0){
+			System.err.println("They wanted you to know:");
+			System.err.println(msgs.toString());
+		}
+
+		running = false;
 	}
 }
 

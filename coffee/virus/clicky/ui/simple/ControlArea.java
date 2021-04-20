@@ -7,16 +7,21 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
-class ControlArea extends JPanel {
+class ControlArea {
 
 	private Scorecard scorecard;
 	private Interacter interacter;
 
+	private JPanel container;
+
 
 	public ControlArea(){
-		super();
 	}
 
+
+	public void init(){
+		container = new JPanel();
+	}
 
 	public void setScorecard(Scorecard s){
 		scorecard = s;

@@ -9,11 +9,16 @@ class DisplayArea extends JPanel {
 
 	private Scorecard scorecard;
 
+	private JPanel container;
+
 
 	public DisplayArea(){
-		super();
 	}
 
+
+	public void init(){
+		container = new JPanel();
+	}
 
 	public void setScorecard(Scorecard s){
 		scorecard = s;

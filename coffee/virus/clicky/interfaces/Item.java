@@ -6,5 +6,7 @@ public interface Item {
 
 	void executeEffect(Interacter i);
 
+	void tick();
+
 }
 
