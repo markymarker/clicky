@@ -11,10 +11,6 @@ import java.util.ArrayList;
  */
 public class Interacter {
 
-	public static final int ACTION_CLICK = 0;
-	public static final int ACTION_PURCHASE = 1;
-
-
 	private ArrayList<Listener> listeners;
 
 
@@ -71,7 +67,17 @@ public class Interacter {
 	 * Dispatches a click event.
 	 */
 	public void addClick(){
-		dispatchEvent(new UserEvent(ACTION_CLICK));
+		dispatchEvent(new UserEvent(UserEvent.ACTION_CLICK));
+	}
+
+	/**
+	 * Assist event.
+	 * Dispatches an assist event with the given quantity.
+	 *
+	 * @param amount The amount of assist points to add
+	 */
+	public void addAssist(int amount){
+		dispatchEvent(new UserEvent(UserEvent.ACTION_ASSIST, amount));
 	}
 
 	/**
@@ -81,7 +87,7 @@ public class Interacter {
 	 * @param itemId The id of the item that was purchased in this event
 	 */
 	public void purchaseItem(int itemId){
-		dispatchEvent(new UserEvent(ACTION_PURCHASE, itemId));
+		dispatchEvent(new UserEvent(UserEvent.ACTION_PURCHASE, itemId));
 	}
 
 }

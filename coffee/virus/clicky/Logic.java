@@ -32,11 +32,15 @@ class Logic implements Listener {
 	 */
 	public void actionPerformed(UserEvent e){
 		switch(e.getAction()){
-		case Interacter.ACTION_CLICK:
+		case UserEvent.ACTION_CLICK:
 			++scorecard.clicks;
 		break;
 
-		case Interacter.ACTION_PURCHASE:
+		case UserEvent.ACTION_ASSIST:
+			scorecard.assists += e.getExtra();
+		break;
+
+		case UserEvent.ACTION_PURCHASE:
 			scorecard.addItem(ItemManager.get(e.getExtra()));
 		break;
 

@@ -7,6 +7,11 @@ package coffee.virus.clicky;
  */
 public class UserEvent {
 
+	public static final int ACTION_CLICK = 0;
+	public static final int ACTION_ASSIST = 1;
+	public static final int ACTION_PURCHASE = 2;
+
+
 	private int action;
 	private int extra = 0;
 

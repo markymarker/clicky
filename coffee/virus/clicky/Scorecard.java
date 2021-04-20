@@ -32,7 +32,7 @@ public class Scorecard {
 
 
 	public void addItem(Item i){
-		items.add(i);
+		if(i != null) items.add(i);
 	}
 
 	public Collection<Item> getItems(){
