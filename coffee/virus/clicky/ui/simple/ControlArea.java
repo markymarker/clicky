@@ -19,8 +19,12 @@ class ControlArea {
 	}
 
 
-	public void init(){
+	public JPanel init(){
 		container = new JPanel();
+		container.setPreferredSize(new java.awt.Dimension(200, 200));
+		container.setBackground(java.awt.Color.BLUE);
+
+		return container;
 	}
 
 	public void setScorecard(Scorecard s){

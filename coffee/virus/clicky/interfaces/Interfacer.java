@@ -49,7 +49,15 @@ public interface Interfacer {
 	 * graphical resources on the event dispatch thread, then they will need
 	 * to handle that themselves.
 	 */
-	default void init(){}
+	default void init() throws Exception {}
+
+	/**
+	 * Prepare for exit.
+	 * Close windows and clean up resources as necessary. A default empty
+	 * implementation is provided, as this may not be relevant to all
+	 * implementers.
+	 */
+	default void shutdown(){}
 
 }
 

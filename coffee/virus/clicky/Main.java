@@ -20,13 +20,24 @@ class Main {
 	public static void main(String[] args){
 		// TODO: Add options support
 
-		Interfacer iface = new SimpleUI();
+		Main clicky = null;
+		int ecode = 0;
 
-		Main clicky = new Main();
-		clicky.init(iface);
-		clicky.clickLoop();
+		try {
+			Interfacer iface = new SimpleUI();
 
+			clicky = new Main();
+			clicky.init(iface);
+			clicky.clickLoop();
+		} catch(Exception e) {
+			System.out.println("Well, something went terribly wrong");
+			e.printStackTrace();
+			ecode = 1;
+		}
+
+		if(clicky != null) clicky.shutdown();
 		System.out.println("Hope you got some good clicks in!");
+		System.exit(ecode);
 	}
 
 
@@ -51,7 +62,7 @@ class Main {
 	 *
 	 * @param iface I face? No, you face!
 	 */
-	private void init(Interfacer iface){
+	private void init(Interfacer iface) throws Exception {
 		interfacer = iface;
 
 		scorecard = new Scorecard();
@@ -67,13 +78,19 @@ class Main {
 	}
 
 	/**
+	 * Shut it down.
+	 * Close stuff, perform cleanup, etc.
+	 */
+	private void shutdown(){
+		running = false;
+		interfacer.shutdown();
+	}
+
+	/**
 	 * Logic loop.
 	 * TODO
 	 */
 	private void clickLoop(){
-		System.out.println("No loop yet :(");
-
-		int tmpcount = 0;
 		int clicktastrophes = 0;
 		StringBuilder msgs = new StringBuilder();
 		long lasttickstart = System.currentTimeMillis();
@@ -95,11 +112,6 @@ class Main {
 				lasttickstart = System.currentTimeMillis();
 
 				logic.runTick(interact);
-
-				// TODO: Remove when more built out
-				System.out.println(tmpcount++);
-				if(tmpcount >= 5)
-					throw new Exception("That's all for now, folks");
 			}
 		} catch(Exception e) {
 			System.err.println("Massive click catastrophe occurred: " + e.getMessage());

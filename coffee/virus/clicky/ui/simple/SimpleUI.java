@@ -5,6 +5,11 @@ import coffee.virus.clicky.Interacter;
 
 import coffee.virus.clicky.interfaces.Interfacer;
 
+import java.awt.BorderLayout;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 
 
@@ -13,7 +18,7 @@ import javax.swing.JFrame;
  * Not too frilly, maybe good workhorse for testing.
  * TODO
  */
-public class SimpleUI implements Interfacer {
+public class SimpleUI implements Interfacer, Runnable {
 
 	private Scorecard scorecard;
 	private Interacter interacter;
@@ -29,15 +34,28 @@ public class SimpleUI implements Interfacer {
 	}
 
 
-	public void init(){
+	public void init() throws Exception {
+		javax.swing.SwingUtilities.invokeAndWait(this);
+	}
+
+	public void run(){
 		window = new JFrame("Click To Continue");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setLocationRelativeTo(null);
 
-		display.init();
-		controls.init();
+		window.setLayout(new BorderLayout());
+		window.add(display.init(), BorderLayout.NORTH);
+		window.add(controls.init(), BorderLayout.SOUTH);
 
-		// TODO: Any other swing init on event thread
+		window.addWindowListener(new Windower());
+
+		window.pack();
+		window.setVisible(true);
+	}
+
+	public void shutdown(){
+		window.dispose();
 	}
 
 	public void setScorecard(Scorecard s){
@@ -53,6 +71,16 @@ public class SimpleUI implements Interfacer {
 
 	public void update(){
 		// TODO: Update counts, fields, etc.
+	}
+
+
+// ///////////////////// //
+// WINDOW EVENT LISTENER //
+
+	private class Windower extends WindowAdapter {
+		public void windowClosed(WindowEvent e){
+			// TODO: Notify Main in a nice fashion
+		}
 	}
 
 }

@@ -5,7 +5,7 @@ import coffee.virus.clicky.Scorecard;
 import javax.swing.JPanel;
 
 
-class DisplayArea extends JPanel {
+class DisplayArea {
 
 	private Scorecard scorecard;
 
@@ -16,8 +16,12 @@ class DisplayArea extends JPanel {
 	}
 
 
-	public void init(){
+	public JPanel init(){
 		container = new JPanel();
+		container.setPreferredSize(new java.awt.Dimension(200, 200));
+		container.setBackground(java.awt.Color.RED);
+
+		return container;
 	}
 
 	public void setScorecard(Scorecard s){
