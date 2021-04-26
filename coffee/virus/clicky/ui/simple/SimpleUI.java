@@ -71,6 +71,7 @@ public class SimpleUI implements Interfacer, Runnable {
 
 	public void update(){
 		// TODO: Update counts, fields, etc.
+		display.update();
 	}
 
 
