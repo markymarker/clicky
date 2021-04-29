@@ -39,8 +39,8 @@ class Logic implements Listener {
 		++scorecard.ticks;
 
 		for(Item i : scorecard.getItems()){
-			i.tick();
 			i.executeEffect(iact);
+			i.tick();
 		}
 
 		interfacer.update();

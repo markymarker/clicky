@@ -35,8 +35,14 @@ public interface Interfacer {
 	 * This will be called when state has updated and the ui should update in
 	 * response. When this is called, implementers should re-read the state
 	 * object they are holding and refresh any displays as appropriate.
+	 *
+	 * The return value here indicates whether the program should continue
+	 * or exit. This is so that requests to exit based on an action in the
+	 * implementer have a nice pathway back to the main execution function.
+	 *
+	 * @return TRUE to continue play, FALSE to request exit
 	 */
-	void update();
+	boolean update();
 
 	/**
 	 * Prepare for the show.

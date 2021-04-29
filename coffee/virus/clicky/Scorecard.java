@@ -39,5 +39,22 @@ public class Scorecard {
 		return items;
 	}
 
+
+// ///////// //
+// DEV/DEBUG //
+
+	public String toString(){
+		StringBuilder sb = new StringBuilder(
+			"Ticks: (" + ticks + "), Clicks: (" + clicks + "), Assists: (" + assists + ")\n" +
+			"Items (" + items.size() + "):\n"
+		);
+
+		for(Item i : items){
+			sb.append(i + "\n");
+		}
+
+		return sb.toString();
+	}
+
 }
 

@@ -112,7 +112,10 @@ class Main {
 				lasttickstart = System.currentTimeMillis();
 
 				logic.runTick(interact);
-				interfacer.update();
+				if(!interfacer.update()){
+					running = false;
+					shutdown();
+				}
 			}
 		} catch(Exception e) {
 			System.err.println("Massive click catastrophe occurred: " + e.getMessage());

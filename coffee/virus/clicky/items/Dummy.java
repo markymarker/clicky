@@ -9,5 +9,13 @@ public class Dummy implements Item {
 	public void tick(){}
 	public void executeEffect(Interacter i){}
 
+
+// ///////// //
+// DEV/DEBUG //
+
+	public String toString(){
+		return "Dummy item";
+	}
+
 }
 

@@ -3,6 +3,8 @@ package coffee.virus.clicky.ui.simple;
 import coffee.virus.clicky.Scorecard;
 import coffee.virus.clicky.Interacter;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -21,8 +23,8 @@ class ControlArea {
 
 	public JPanel init(){
 		container = new JPanel();
-		container.setPreferredSize(new java.awt.Dimension(200, 200));
-		container.setBackground(java.awt.Color.BLUE);
+		container.setPreferredSize(new java.awt.Dimension(200, 100));
+		container.setBackground(new Color(50, 30, 30));
 
 		return container;
 	}

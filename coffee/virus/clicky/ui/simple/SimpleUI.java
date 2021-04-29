@@ -20,8 +20,11 @@ import javax.swing.JFrame;
  */
 public class SimpleUI implements Interfacer, Runnable {
 
-	private Scorecard scorecard;
-	private Interacter interacter;
+	private boolean continueRunning = true;
+
+	Scorecard scorecard;
+	Interacter interacter;
+	private ActionHandler actionDude;
 
 	private JFrame window;
 	private DisplayArea display;
@@ -49,12 +52,15 @@ public class SimpleUI implements Interfacer, Runnable {
 		window.add(controls.init(), BorderLayout.SOUTH);
 
 		window.addWindowListener(new Windower());
+		actionDude = new ActionHandler(this);
+		actionDude.registerEvents(window.getRootPane());
 
 		window.pack();
 		window.setVisible(true);
 	}
 
 	public void shutdown(){
+		continueRunning = false;
 		window.dispose();
 	}
 
@@ -69,9 +75,10 @@ public class SimpleUI implements Interfacer, Runnable {
 		controls.setInteracter(i);
 	}
 
-	public void update(){
+	public boolean update(){
 		// TODO: Update counts, fields, etc.
 		display.update();
+		return continueRunning;
 	}
 
 

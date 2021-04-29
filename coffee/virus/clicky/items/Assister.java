@@ -34,5 +34,16 @@ public class Assister implements Item {
 		if(countdown == frequency) i.addAssist(amount);
 	}
 
+
+// ///////// //
+// DEV/DEBUG //
+
+	public String toString(){
+		return "Assister :: amt (" + amount +
+			"), freq (" + frequency +
+			"), countdown (" + countdown +
+			")";
+	}
+
 }
 
