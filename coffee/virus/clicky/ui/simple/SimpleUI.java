@@ -24,7 +24,7 @@ public class SimpleUI implements Interfacer, Runnable {
 
 	Scorecard scorecard;
 	Interacter interacter;
-	private ActionHandler actionDude;
+	ActionHandler actionDude;
 
 	private JFrame window;
 	private DisplayArea display;
@@ -32,8 +32,9 @@ public class SimpleUI implements Interfacer, Runnable {
 
 
 	public SimpleUI(){
-		display = new DisplayArea();
-		controls = new ControlArea();
+		actionDude = new ActionHandler(this);
+		display = new DisplayArea(this);
+		controls = new ControlArea(this);
 	}
 
 
@@ -43,16 +44,14 @@ public class SimpleUI implements Interfacer, Runnable {
 
 	public void run(){
 		window = new JFrame("Click To Continue");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setLocationRelativeTo(null);
 
 		window.setLayout(new BorderLayout());
 		window.add(display.init(), BorderLayout.NORTH);
-		window.add(controls.init(), BorderLayout.SOUTH);
+		window.add(controls.init(), BorderLayout.CENTER);
 
 		window.addWindowListener(new Windower());
-		actionDude = new ActionHandler(this);
 		actionDude.registerEvents(window.getRootPane());
 
 		window.pack();
@@ -66,13 +65,10 @@ public class SimpleUI implements Interfacer, Runnable {
 
 	public void setScorecard(Scorecard s){
 		scorecard = s;
-		display.setScorecard(s);
-		controls.setScorecard(s);
 	}
 
 	public void setInteracter(Interacter i){
 		interacter = i;
-		controls.setInteracter(i);
 	}
 
 	public boolean update(){
@@ -87,7 +83,7 @@ public class SimpleUI implements Interfacer, Runnable {
 
 	private class Windower extends WindowAdapter {
 		public void windowClosed(WindowEvent e){
-			// TODO: Notify Main in a nice fashion
+			continueRunning = false;
 		}
 	}
 

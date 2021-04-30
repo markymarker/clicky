@@ -4,6 +4,7 @@ import coffee.virus.clicky.interfaces.Interfacer;
 
 import coffee.virus.clicky.ui.simple.SimpleUI;
 
+
 /**
  * Main class, entry point.
  * Interprets options and gets things going.
@@ -29,6 +30,14 @@ class Main {
 			clicky = new Main();
 			clicky.init(iface);
 			clicky.clickLoop();
+
+			System.out.println("Your final stats:" +
+				"\n     Ticks: " + clicky.scorecard.ticks +
+				"\n    Clicks: " + clicky.scorecard.clicks +
+				"\n   Assists: " + clicky.scorecard.assists +
+				"\n     Items: " + clicky.scorecard.getItemCount()
+			);
+
 		} catch(Exception e) {
 			System.out.println("Well, something went terribly wrong");
 			e.printStackTrace();
@@ -112,13 +121,11 @@ class Main {
 				lasttickstart = System.currentTimeMillis();
 
 				logic.runTick(interact);
-				if(!interfacer.update()){
-					running = false;
-					shutdown();
-				}
+				if(!interfacer.update()) shutdown();
 			}
 		} catch(Exception e) {
 			System.err.println("Massive click catastrophe occurred: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		if(clicktastrophes > 0){

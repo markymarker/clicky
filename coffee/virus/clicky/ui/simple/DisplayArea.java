@@ -10,13 +10,14 @@ import javax.swing.JTextArea;
 
 class DisplayArea {
 
-	private Scorecard scorecard;
+	private SimpleUI ui;
 
 	private JPanel container;
 	private JTextArea display;
 
 
-	public DisplayArea(){
+	public DisplayArea(SimpleUI ui){
+		this.ui = ui;
 	}
 
 
@@ -27,7 +28,8 @@ class DisplayArea {
 
 		display = new JTextArea(4, 12);
 		display.setEnabled(false);
-		display.setBackground(new Color(80, 80, 90));
+		display.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
+		display.setBackground(new Color(32, 32, 42));
 		//display.setForeground(new Color(180, 180, 220));
 		container.add(display);
 
@@ -35,16 +37,13 @@ class DisplayArea {
 		return container;
 	}
 
-	public void setScorecard(Scorecard s){
-		scorecard = s;
-	}
-
 	public void update(){
-		if(scorecard == null) return;
+		if(ui.scorecard == null) return;
 
 		display.setText("\n" +
-			"Points: " + (scorecard.clicks + scorecard.assists) + "\n" +
-			"Assists: " + scorecard.assists + ", Ticks: " + scorecard.ticks + "\n"
+			"Points: " + (ui.scorecard.clicks + ui.scorecard.assists) + "\n" +
+			"Assists: " + ui.scorecard.assists + ", Ticks: " + ui.scorecard.ticks + "\n" +
+			"Items: " + ui.scorecard.getItemCount() + "\n"
 		);
 	}
 

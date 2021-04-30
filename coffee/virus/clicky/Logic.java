@@ -4,6 +4,7 @@ import coffee.virus.clicky.interfaces.Interfacer;
 import coffee.virus.clicky.interfaces.Item;
 import coffee.virus.clicky.interfaces.Listener;
 
+
 /**
  * The brains of the operation.
  * This is the class that will respond to events and update the game state
@@ -11,6 +12,8 @@ import coffee.virus.clicky.interfaces.Listener;
  * of the game, but will not initialize any of them itself.
  */
 class Logic implements Listener {
+
+	private volatile boolean ticking = false;
 
 	private Interfacer interfacer;
 	private Scorecard scorecard;
@@ -36,6 +39,8 @@ class Logic implements Listener {
 	 * relevant to advancement of the game state.
 	 */
 	public void runTick(Interacter iact){
+		ticking = true;
+
 		++scorecard.ticks;
 
 		for(Item i : scorecard.getItems()){
@@ -44,6 +49,8 @@ class Logic implements Listener {
 		}
 
 		interfacer.update();
+
+		ticking = false;
 	}
 
 	/**
@@ -65,6 +72,9 @@ class Logic implements Listener {
 		break;
 
 		case UserEvent.ACTION_PURCHASE:
+			// Hold off on any updates if in the middle of a tick to help
+			// mitigate concurrency issues with the item list
+			while(ticking) /* no-op */ ;
 			scorecard.addItem(ItemManager.get(e.getExtra()));
 		break;
 

@@ -5,6 +5,7 @@ import coffee.virus.clicky.interfaces.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 /**
  * A value holder for game data and stats.
  * Score fields are public and can be accessed directly for reading and writing.
@@ -33,6 +34,14 @@ public class Scorecard {
 
 	public void addItem(Item i){
 		if(i != null) items.add(i);
+	}
+
+	public void addItems(Collection<Item> list){
+		items.addAll(list);
+	}
+
+	public int getItemCount(){
+		return items.size();
 	}
 
 	public Collection<Item> getItems(){
