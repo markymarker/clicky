@@ -6,6 +6,10 @@ import coffee.virus.clicky.interfaces.Item;
 
 public class Dummy implements Item {
 
+	public Dummy clone() throws CloneNotSupportedException {
+		return (Dummy)super.clone();
+	}
+
 	public void tick(){}
 	public void executeEffect(Interacter i){}
 

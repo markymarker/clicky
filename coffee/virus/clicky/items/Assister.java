@@ -26,6 +26,11 @@ public class Assister implements Item {
 	}
 
 
+	public Assister clone() throws CloneNotSupportedException {
+		return (Assister)super.clone();
+	}
+
+
 	public void tick(){
 		if(--countdown <= 0) countdown = frequency;
 	}
