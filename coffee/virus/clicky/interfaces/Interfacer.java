@@ -3,6 +3,7 @@ package coffee.virus.clicky.interfaces;
 import coffee.virus.clicky.Interacter;
 import coffee.virus.clicky.Scorecard;
 
+
 /**
  * Interfacer interface.
  * This is the interface with the user. Implementers of this should provide a
@@ -24,6 +25,13 @@ public interface Interfacer extends Listener {
 	void setScorecard(Scorecard scorecard);
 
 	/**
+	 * Get access to the interfacer's scorecard.
+	 *
+	 * @return The scorecard in use by the interfacer
+	 */
+	Scorecard getScorecard();
+
+	/**
 	 * Get access to the game actions.
 	 * Implementers will receive the interaction object for the game through
 	 * this method as part of initialization, and can then interact with it
@@ -33,6 +41,13 @@ public interface Interfacer extends Listener {
 	 * @param interact The interacter to use for game actions
 	 */
 	void setInteracter(Interacter interact);
+
+	/**
+	 * Get access to the interfacer's interacter.
+	 *
+	 * @return The interacter in use by the interfacer
+	 */
+	Interacter getInteracter();
 
 	/**
 	 * Update the display.

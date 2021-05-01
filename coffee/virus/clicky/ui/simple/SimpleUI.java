@@ -6,6 +6,8 @@ import coffee.virus.clicky.UserEvent;
 
 import coffee.virus.clicky.interfaces.Interfacer;
 
+import coffee.virus.clicky.ui.ActionHandler;
+
 import java.awt.BorderLayout;
 
 import java.awt.event.WindowAdapter;
@@ -68,8 +70,16 @@ public class SimpleUI implements Interfacer, Runnable {
 		scorecard = s;
 	}
 
+	public Scorecard getScorecard(){
+		return scorecard;
+	}
+
 	public void setInteracter(Interacter i){
 		interacter = i;
+	}
+
+	public Interacter getInteracter(){
+		return interacter;
 	}
 
 	public boolean update(){

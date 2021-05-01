@@ -2,7 +2,7 @@ package coffee.virus.clicky;
 
 import coffee.virus.clicky.interfaces.Interfacer;
 
-import coffee.virus.clicky.ui.simple.SimpleUI;
+import coffee.virus.clicky.ui.InterfacerInstantiator;
 
 
 /**
@@ -25,10 +25,8 @@ class Main {
 		int ecode = 0;
 
 		try {
-			Interfacer iface = new SimpleUI();
-
 			clicky = new Main();
-			clicky.init(iface);
+			clicky.init(InterfacerInstantiator.SIMPLEUI);
 			clicky.clickLoop();
 
 			System.out.println("Your final stats:" +
@@ -72,20 +70,20 @@ class Main {
 	 *
 	 * @param iface I face? No, you face!
 	 */
-	private void init(Interfacer iface) throws Exception {
-		interfacer = iface;
-
+	private void init(int iface) throws Exception {
 		scorecard = new Scorecard();
 		interact = new Interacter();
 		logic = new Logic(scorecard);
+
+		interfacer = InterfacerInstantiator.getUI(iface);
 
 		interfacer.setScorecard(scorecard);
 		interfacer.setInteracter(interact);
 
 		interact.addListener(logic);
-		interact.addListener(iface);
+		interact.addListener(interfacer);
 
-		iface.init();
+		interfacer.init();
 	}
 
 	/**

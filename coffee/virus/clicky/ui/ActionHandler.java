@@ -1,4 +1,6 @@
-package coffee.virus.clicky.ui.simple;
+package coffee.virus.clicky.ui;
+
+import coffee.virus.clicky.interfaces.Interfacer;
 
 import java.awt.event.ActionEvent;
 
@@ -15,7 +17,7 @@ import javax.swing.KeyStroke;
  * Will take care of registering and responding to actions, then will call into
  * method(s) on the UI for the effects that should occur.
  */
-class ActionHandler {
+public class ActionHandler {
 
 	private static final String ASTRING_CLOSE = "Close Window";
 	private static final String ASTRING_CLICK = "Click";
@@ -39,10 +41,10 @@ class ActionHandler {
 	public final Actioner ACTION_PURCHASE_4 = new Actioner(ASTRING_PURCHASE_4);
 	public final Actioner ACTION_PURCHASE_5 = new Actioner(ASTRING_PURCHASE_5);
 
-	private SimpleUI ui;
+	private Interfacer ui;
 
 
-	public ActionHandler(SimpleUI creator){
+	public ActionHandler(Interfacer creator){
 		this.ui = creator;
 	}
 
@@ -76,28 +78,28 @@ class ActionHandler {
 		case ASTRING_CLOSE: ui.shutdown();
 		break;
 
-		case ASTRING_CLICK: ui.interacter.addClick();
+		case ASTRING_CLICK: ui.getInteracter().addClick();
 		break;
 
-		case ASTRING_DEBUG_DUMP: System.out.println(ui.scorecard);
+		case ASTRING_DEBUG_DUMP: System.out.println(ui.getScorecard());
 		break;
 
-		case ASTRING_PURCHASE_0: ui.interacter.purchaseItem(0);
+		case ASTRING_PURCHASE_0: ui.getInteracter().purchaseItem(0);
 		break;
 
-		case ASTRING_PURCHASE_1: ui.interacter.purchaseItem(1);
+		case ASTRING_PURCHASE_1: ui.getInteracter().purchaseItem(1);
 		break;
 
-		case ASTRING_PURCHASE_2: ui.interacter.purchaseItem(2);
+		case ASTRING_PURCHASE_2: ui.getInteracter().purchaseItem(2);
 		break;
 
-		case ASTRING_PURCHASE_3: ui.interacter.purchaseItem(3);
+		case ASTRING_PURCHASE_3: ui.getInteracter().purchaseItem(3);
 		break;
 
-		case ASTRING_PURCHASE_4: ui.interacter.purchaseItem(4);
+		case ASTRING_PURCHASE_4: ui.getInteracter().purchaseItem(4);
 		break;
 
-		case ASTRING_PURCHASE_5: ui.interacter.purchaseItem(5);
+		case ASTRING_PURCHASE_5: ui.getInteracter().purchaseItem(5);
 		break;
 
 		default:
