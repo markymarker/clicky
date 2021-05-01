@@ -2,7 +2,6 @@ package coffee.virus.clicky.ui.spicy;
 
 import coffee.virus.clicky.interfaces.Effect;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
@@ -13,22 +12,38 @@ import java.util.ArrayList;
 
 class AnimationThread extends Thread {
 
+	private volatile boolean running = false;
 	private volatile boolean listLocked = false;
 
 	private ArrayList<Effect> effects;
 	private ArrayList<Effect> effectAddQueue;
 
-	Component drawTarget;
-	BufferedImage frame;
+	SpicyUI.DrawGlass drawTarget;
 
 
-	public AnimationThread(Component drawTarget){
+	public AnimationThread(SpicyUI.DrawGlass drawTarget){
 		this.drawTarget = drawTarget;
+
+		setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+			public void uncaughtException(Thread t, Throwable e){
+				System.err.println("Something went sideways on the animation thread");
+				e.printStackTrace();
+			}
+		});
 
 		effects = new ArrayList<>(64);
 		effectAddQueue = new ArrayList<>(16);
 	}
 
+
+	/**
+	 * Stop it.
+	 * You stop that animating right now, young thread!
+	 * Okay, I guess you can finish one last frame, but only one!
+	 */
+	public void shutdown(){
+		running = false;
+	}
 
 	/**
 	 * Add an effect to be animated.
@@ -46,18 +61,49 @@ class AnimationThread extends Thread {
 	 * Processing and drawing logic combined, fight me.
 	 */
 	public void run(){
-		// Just a test for now
+		running = true;
 
-		Dimension d = drawTarget.getSize();
-		BufferedImage f = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = f.createGraphics();
+		// So we can assume this runs at something around 20 FPS
+		final int sleepTarget = 50;
+		long lastFrame = System.currentTimeMillis() - sleepTarget;
 
-		g.setColor(java.awt.Color.RED);
-		g.fillRect(10, 10, 30, 300);
+		// Test stuff: start
+		int x = 0;
+		int y = 80;
+		boolean xpos = true;
+		boolean ypos = true;
+		// Test stuff: end
 
-		g.dispose();
-		frame = f;
-		drawTarget.repaint();
+		while(running){
+			// Perhaps we'll see about moving effects just with interpolation
+			// 500 ms max => keep choppiness in a little bit of check
+			final long timeElapsed = Math.min(System.currentTimeMillis() - lastFrame, 500);
+
+			Dimension d = drawTarget.getSize();
+			BufferedImage f = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = f.createGraphics();
+
+			// TODO
+			// Test stuff: start
+			int move = 5 * sleepTarget / (int)timeElapsed;
+			if(x > d.width - 40) xpos = false; else if(x < 0) xpos = true;
+			if(y > d.height - 40) ypos = false; else if(y < 0) ypos = true;
+			x = xpos ? x + move : x - move;
+			y = ypos ? y + move : y - move;
+			g.setColor(java.awt.Color.RED);
+			g.fillRect(x, y, 40, 40);
+			// Test stuff: end
+
+			g.dispose();
+			drawTarget.setFrame(f);
+			drawTarget.repaint();
+
+			lastFrame = System.currentTimeMillis();
+
+			// Slow down there, champ!
+			try { Thread.sleep(sleepTarget); }
+			catch (Exception e) { /* Eh, whatever; who needs sleep anyway. */ }
+		}
 	}
 
 }

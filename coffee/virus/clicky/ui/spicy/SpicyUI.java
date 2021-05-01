@@ -10,6 +10,7 @@ import coffee.virus.clicky.ui.ActionHandler;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -75,6 +76,7 @@ public class SpicyUI implements Interfacer, Runnable {
 
 	public void shutdown(){
 		continueRunning = false;
+		anim.shutdown();
 		window.dispose();
 	}
 
@@ -117,10 +119,17 @@ public class SpicyUI implements Interfacer, Runnable {
 // ////////////////// //
 // PANE FOR ANIMATION //
 
-	private class DrawGlass extends JComponent {
+	class DrawGlass extends JComponent {
+
+		private Image frame;
+
+
+		public void setFrame(Image f){
+			frame = f;
+		}
 
 		protected void paintComponent(Graphics g){
-			g.drawImage(anim.frame, 0, 0, null);
+			g.drawImage(frame, 0, 0, null);
 		}
 	}
 
