@@ -26,7 +26,7 @@ class Main {
 
 		try {
 			clicky = new Main();
-			clicky.init(InterfacerInstantiator.SIMPLEUI);
+			clicky.init(InterfacerInstantiator.SPICYUI);
 			clicky.clickLoop();
 
 			System.out.println("Your final stats:" +

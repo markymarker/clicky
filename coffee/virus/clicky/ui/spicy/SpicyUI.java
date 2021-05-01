@@ -1,4 +1,4 @@
-package coffee.virus.clicky.ui.simple;
+package coffee.virus.clicky.ui.spicy;
 
 import coffee.virus.clicky.Scorecard;
 import coffee.virus.clicky.Interacter;
@@ -9,19 +9,21 @@ import coffee.virus.clicky.interfaces.Interfacer;
 import coffee.virus.clicky.ui.ActionHandler;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 
 /**
- * Simple UI.
- * Not too frilly, maybe good workhorse for testing.
+ * Spicy UI.
+ * More frilly than SimpleUI, maybe good for impressing the homies.
  * TODO
  */
-public class SimpleUI implements Interfacer, Runnable {
+public class SpicyUI implements Interfacer, Runnable {
 
 	private boolean continueRunning = true;
 
@@ -30,11 +32,13 @@ public class SimpleUI implements Interfacer, Runnable {
 	ActionHandler actionDude;
 
 	private JFrame window;
+	private DrawGlass glass;
+	private AnimationThread anim;
 	private DisplayArea display;
 	private ControlArea controls;
 
 
-	public SimpleUI(){
+	public SpicyUI(){
 		actionDude = new ActionHandler(this);
 		display = new DisplayArea(this);
 		controls = new ControlArea(this);
@@ -57,8 +61,16 @@ public class SimpleUI implements Interfacer, Runnable {
 		window.addWindowListener(new Windower());
 		actionDude.registerEvents(window.getRootPane());
 
+		glass = new DrawGlass();
+		window.setGlassPane(glass);
+		glass.setVisible(true);
+
+		anim = new AnimationThread(glass);
+
 		window.pack();
 		window.setVisible(true);
+
+		anim.start();
 	}
 
 	public void shutdown(){
@@ -98,6 +110,17 @@ public class SimpleUI implements Interfacer, Runnable {
 	private class Windower extends WindowAdapter {
 		public void windowClosed(WindowEvent e){
 			continueRunning = false;
+		}
+	}
+
+
+// ////////////////// //
+// PANE FOR ANIMATION //
+
+	private class DrawGlass extends JComponent {
+
+		protected void paintComponent(Graphics g){
+			g.drawImage(anim.frame, 0, 0, null);
 		}
 	}
 
