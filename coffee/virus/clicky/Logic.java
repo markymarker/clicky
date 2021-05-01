@@ -69,7 +69,7 @@ class Logic implements Listener {
 		case UserEvent.ACTION_PURCHASE:
 			// Hold off on any updates if in the middle of a tick to help
 			// mitigate concurrency issues with the item list
-			while(ticking) /* no-op */ ;
+			while(ticking) Thread.onSpinWait();
 			scorecard.addItem(ItemManager.get(e.getExtra()));
 		break;
 
