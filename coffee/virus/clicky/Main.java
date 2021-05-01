@@ -32,6 +32,7 @@ class Main {
 			clicky.clickLoop();
 
 			System.out.println("Your final stats:" +
+				"\n    Points: " + (clicky.scorecard.clicks + clicky.scorecard.assists) +
 				"\n     Ticks: " + clicky.scorecard.ticks +
 				"\n    Clicks: " + clicky.scorecard.clicks +
 				"\n   Assists: " + clicky.scorecard.assists +
@@ -76,12 +77,13 @@ class Main {
 
 		scorecard = new Scorecard();
 		interact = new Interacter();
-		logic = new Logic(scorecard, iface);
+		logic = new Logic(scorecard);
 
 		interfacer.setScorecard(scorecard);
 		interfacer.setInteracter(interact);
 
 		interact.addListener(logic);
+		interact.addListener(iface);
 
 		iface.init();
 	}
@@ -120,7 +122,7 @@ class Main {
 
 				lasttickstart = System.currentTimeMillis();
 
-				logic.runTick(interact);
+				logic.runTick(interact, interfacer);
 				if(!interfacer.update()) shutdown();
 			}
 		} catch(Exception e) {

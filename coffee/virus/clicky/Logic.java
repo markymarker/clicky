@@ -15,7 +15,6 @@ class Logic implements Listener {
 
 	private volatile boolean ticking = false;
 
-	private Interfacer interfacer;
 	private Scorecard scorecard;
 
 
@@ -24,11 +23,9 @@ class Logic implements Listener {
 	 * Create a new Logic that will use the given pieces of game state.
 	 *
 	 * @param card The scorecard to reference and update
-	 * @param iface The interfacer to notify of updates
 	 */
-	public Logic(Scorecard card, Interfacer iface){
+	public Logic(Scorecard card){
 		this.scorecard = card;
-		this.interfacer = iface;
 	}
 
 
@@ -38,7 +35,7 @@ class Logic implements Listener {
 	 * counts, running through actors, calling for updates, and anything else
 	 * relevant to advancement of the game state.
 	 */
-	public void runTick(Interacter iact){
+	public void runTick(Interacter iact, Interfacer iface){
 		ticking = true;
 
 		++scorecard.ticks;
@@ -48,7 +45,7 @@ class Logic implements Listener {
 			i.tick();
 		}
 
-		interfacer.update();
+		iface.update();
 
 		ticking = false;
 	}
@@ -60,8 +57,6 @@ class Logic implements Listener {
 	 * @param e The event to respond to
 	 */
 	public void actionPerformed(UserEvent e){
-		boolean update = true;
-
 		switch(e.getAction()){
 		case UserEvent.ACTION_CLICK:
 			++scorecard.clicks;
@@ -80,10 +75,7 @@ class Logic implements Listener {
 
 		default:
 			System.err.println("Logic: Unrecognized action (" + e.getAction() + ")");
-			update = false;
 		}
-
-		if(update) interfacer.update();
 	}
 
 }

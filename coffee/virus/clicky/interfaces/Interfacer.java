@@ -7,8 +7,12 @@ import coffee.virus.clicky.Scorecard;
  * Interfacer interface.
  * This is the interface with the user. Implementers of this should provide a
  * visual aspect and the input methods for interaction.
+ *
+ * This extends the listener interface because implementers should listen at
+ * least for when events occur to update the elements and values being shown
+ * appropriately.
  */
-public interface Interfacer {
+public interface Interfacer extends Listener {
 
 	/**
 	 * Get access to the scorecard.

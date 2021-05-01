@@ -2,6 +2,7 @@ package coffee.virus.clicky.ui.simple;
 
 import coffee.virus.clicky.Scorecard;
 import coffee.virus.clicky.Interacter;
+import coffee.virus.clicky.UserEvent;
 
 import coffee.virus.clicky.interfaces.Interfacer;
 
@@ -75,6 +76,10 @@ public class SimpleUI implements Interfacer, Runnable {
 		// TODO: Update counts, fields, etc.
 		display.update();
 		return continueRunning;
+	}
+
+	public void actionPerformed(UserEvent e){
+		update();
 	}
 
 
