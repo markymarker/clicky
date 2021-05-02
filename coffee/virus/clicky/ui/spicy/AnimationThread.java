@@ -72,6 +72,12 @@ class AnimationThread extends Thread {
 		int y = 80;
 		boolean xpos = true;
 		boolean ypos = true;
+		coffee.virus.clicky.effects.ClickFly cf1 = new coffee.virus.clicky.effects.ClickFly(
+			new java.awt.Point(50, 50)
+		);
+		coffee.virus.clicky.effects.ClickFly cf2 = new coffee.virus.clicky.effects.ClickFly(
+			new java.awt.Point(50, 50)
+		);
 		// Test stuff: end
 
 		while(running){
@@ -92,6 +98,15 @@ class AnimationThread extends Thread {
 			y = ypos ? y + move : y - move;
 			g.setColor(java.awt.Color.RED);
 			g.fillRect(x, y, 40, 40);
+
+			if(!cf1.tick(timeElapsed)) cf1 = new coffee.virus.clicky.effects.ClickFly(
+				new java.awt.Point(100, 100)
+			);
+			if(!cf2.tick(timeElapsed)) cf2 = new coffee.virus.clicky.effects.ClickFly(
+				new java.awt.Point(100, 100)
+			);
+			cf1.draw(g);
+			cf2.draw(g);
 			// Test stuff: end
 
 			g.dispose();
