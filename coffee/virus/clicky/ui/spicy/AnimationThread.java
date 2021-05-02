@@ -2,6 +2,7 @@ package coffee.virus.clicky.ui.spicy;
 
 import coffee.virus.clicky.interfaces.Effect;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 
 
 class AnimationThread extends Thread {
+
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
 	private volatile boolean running = false;
 
@@ -84,6 +87,7 @@ class AnimationThread extends Thread {
 			Dimension d = drawTarget.getSize();
 			BufferedImage f = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = f.createGraphics();
+			g.setBackground(TRANSPARENT);
 
 			// Perhaps we'll see about moving effects just with interpolation
 			// 500 ms max => keep choppiness in a little bit of check

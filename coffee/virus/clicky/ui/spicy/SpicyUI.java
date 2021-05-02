@@ -5,12 +5,15 @@ import coffee.virus.clicky.Interacter;
 import coffee.virus.clicky.UserEvent;
 
 import coffee.virus.clicky.effects.ClickFly;
+import coffee.virus.clicky.effects.Highlight;
 
+import coffee.virus.clicky.interfaces.Effect;
 import coffee.virus.clicky.interfaces.Interfacer;
 
 import coffee.virus.clicky.ui.ActionHandler;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -41,6 +44,8 @@ public class SpicyUI implements Interfacer, Runnable {
 	private DisplayArea display;
 	private ControlArea controls;
 
+	private Highlight clickBHighlight = null;
+
 
 	public SpicyUI(){
 		actionDude = new ActionHandler(this);
@@ -58,6 +63,12 @@ public class SpicyUI implements Interfacer, Runnable {
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setLocationRelativeTo(null);
 
+		glass = new DrawGlass();
+		window.setGlassPane(glass);
+		glass.setVisible(true);
+
+		anim = new AnimationThread(glass);
+
 		window.setLayout(new BorderLayout());
 		window.add(display.init(), BorderLayout.NORTH);
 		window.add(controls.init(), BorderLayout.CENTER);
@@ -65,16 +76,11 @@ public class SpicyUI implements Interfacer, Runnable {
 		window.addWindowListener(new Windower());
 		actionDude.registerEvents(window.getRootPane());
 
-		glass = new DrawGlass();
-		window.setGlassPane(glass);
-		glass.setVisible(true);
-
-		anim = new AnimationThread(glass);
-
 		window.pack();
 		window.setVisible(true);
 
 		anim.start();
+		highlightClickButton(true);
 	}
 
 	public void shutdown(){
@@ -104,13 +110,56 @@ public class SpicyUI implements Interfacer, Runnable {
 		return continueRunning;
 	}
 
+	public void addEffect(Effect e){
+		anim.addEffect(e);
+	}
+
 	public void actionPerformed(UserEvent e){
 		update();
 
-		if(e.getAction() == UserEvent.ACTION_CLICK){
+		switch(e.getAction()){
+		case UserEvent.ACTION_CLICK:
 			Point mp = window.getMousePosition();
-			if(mp != null) anim.addEffect(new ClickFly(mp));
+			if(mp != null) addEffect(new ClickFly(mp));
+			if(clickBHighlight.isEnabled()) highlightClickButton(false);
+		break;
+
+		case UserEvent.ACTION_PURCHASE:
+			if(e.getExtra() == 0) highlightClickButton(true);
+		break;
 		}
+	}
+
+
+// /////////// //
+// FANCY STUFF //
+
+	/**
+	 * Set the highlight on the click button on or off.
+	 * If the effect has not yet been created, this will handle creating it.
+	 *
+	 * @param on TRUE to turn effect on, FALSE for off
+	 */
+	private void highlightClickButton(boolean on){
+		if(clickBHighlight == null){
+			Point cbp = new Point();
+			Dimension cbs = new Dimension();
+			controls.whereClickButton(cbp, cbs);
+
+			Point cpos = new Point();
+			controls.whereYouAt(cpos);
+			cbp.x += cpos.x;
+			cbp.y += cpos.y;
+
+			clickBHighlight = new Highlight(cbp, cbs);
+			clickBHighlight.setEnabled(false);
+		}
+
+		boolean pState = clickBHighlight.isEnabled();
+		if(pState == on) return;
+		// Only bother with the below if there's a change in state
+		clickBHighlight.setEnabled(on);
+		if(on) addEffect(clickBHighlight);
 	}
 
 
