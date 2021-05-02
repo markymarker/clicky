@@ -13,7 +13,6 @@ import java.util.ArrayList;
 class AnimationThread extends Thread {
 
 	private volatile boolean running = false;
-	private volatile boolean listLocked = false;
 
 	private ArrayList<Effect> effects;
 	private ArrayList<Effect> effectAddQueue;
@@ -47,11 +46,23 @@ class AnimationThread extends Thread {
 
 	/**
 	 * Add an effect to be animated.
+	 * Needs to synchronize with other methods accessing the effect add queue.
 	 *
 	 * @param e The effect to add to the animations
 	 */
-	public void addEffect(Effect e){
+	public synchronized void addEffect(Effect e){
 		effectAddQueue.add(e);
+	}
+
+	/**
+	 * Shift all the items in the effect add queue to the effect list proper.
+	 * Needs to synchronize with other methods accessing the effect add queue.
+	 */
+	private synchronized void transferEffects(){
+		if(!effectAddQueue.isEmpty()){
+			effects.addAll(effectAddQueue);
+			effectAddQueue.clear();
+		}
 	}
 
 
@@ -72,22 +83,29 @@ class AnimationThread extends Thread {
 		int y = 80;
 		boolean xpos = true;
 		boolean ypos = true;
-		coffee.virus.clicky.effects.ClickFly cf1 = new coffee.virus.clicky.effects.ClickFly(
-			new java.awt.Point(50, 50)
-		);
-		coffee.virus.clicky.effects.ClickFly cf2 = new coffee.virus.clicky.effects.ClickFly(
-			new java.awt.Point(50, 50)
-		);
 		// Test stuff: end
 
 		while(running){
-			// Perhaps we'll see about moving effects just with interpolation
-			// 500 ms max => keep choppiness in a little bit of check
-			final long timeElapsed = Math.min(System.currentTimeMillis() - lastFrame, 500);
+			transferEffects();
 
 			Dimension d = drawTarget.getSize();
 			BufferedImage f = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = f.createGraphics();
+
+			// Perhaps we'll see about moving effects just with interpolation
+			// 500 ms max => keep choppiness in a little bit of check
+			final long timeElapsed = Math.min(System.currentTimeMillis() - lastFrame, 500);
+
+			ArrayList<Effect> toRemove = new ArrayList<>(effects.size());
+			for(Effect e : effects){
+				if(!e.tick(timeElapsed)){
+					toRemove.add(e);
+					continue;
+				}
+				e.draw(g);
+			}
+			effects.removeAll(toRemove);
+			toRemove = null;
 
 			// TODO
 			// Test stuff: start
@@ -98,15 +116,7 @@ class AnimationThread extends Thread {
 			y = ypos ? y + move : y - move;
 			g.setColor(java.awt.Color.RED);
 			g.fillRect(x, y, 40, 40);
-
-			if(!cf1.tick(timeElapsed)) cf1 = new coffee.virus.clicky.effects.ClickFly(
-				new java.awt.Point(100, 100)
-			);
-			if(!cf2.tick(timeElapsed)) cf2 = new coffee.virus.clicky.effects.ClickFly(
-				new java.awt.Point(100, 100)
-			);
-			cf1.draw(g);
-			cf2.draw(g);
+			addEffect(new coffee.virus.clicky.effects.ClickFly(new java.awt.Point(x+20, y+20)));
 			// Test stuff: end
 
 			g.dispose();

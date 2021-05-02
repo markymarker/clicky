@@ -31,6 +31,7 @@ public class ClickFly implements Effect {
 
 	private static final BufferedImage imgProto;
 	private static final Dimension imgDim;
+	private static final Dimension imgDimHalf;
 
 
 	static {
@@ -47,6 +48,10 @@ public class ClickFly implements Effect {
 		imgDim = new Dimension(
 			fm.stringWidth(TEXT),
 			fm.getHeight()
+		);
+		imgDimHalf = new Dimension(
+			imgDim.width / 2,
+			imgDim.height / 2
 		);
 		imgProto = new BufferedImage(
 			imgDim.width,
@@ -77,10 +82,14 @@ public class ClickFly implements Effect {
 	 * Create a new one of these.
 	 * Does some constructing, as one might expect.
 	 *
-	 * @param emitFrom The point where the event occured
+	 * @param emitFrom The point where the event occurred
 	 */
 	public ClickFly(Point emitFrom){
-		origin = new Point(emitFrom);
+		origin = new Point(
+			emitFrom.x - imgDimHalf.width,
+			emitFrom.y - imgDimHalf.height
+		);
+
 		position = new Point(0, 0);
 
 		destination = new Point(

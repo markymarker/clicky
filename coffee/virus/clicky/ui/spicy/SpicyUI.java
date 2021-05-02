@@ -4,6 +4,8 @@ import coffee.virus.clicky.Scorecard;
 import coffee.virus.clicky.Interacter;
 import coffee.virus.clicky.UserEvent;
 
+import coffee.virus.clicky.effects.ClickFly;
+
 import coffee.virus.clicky.interfaces.Interfacer;
 
 import coffee.virus.clicky.ui.ActionHandler;
@@ -11,6 +13,7 @@ import coffee.virus.clicky.ui.ActionHandler;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -103,6 +106,11 @@ public class SpicyUI implements Interfacer, Runnable {
 
 	public void actionPerformed(UserEvent e){
 		update();
+
+		if(e.getAction() == UserEvent.ACTION_CLICK){
+			Point mp = window.getMousePosition();
+			if(mp != null) anim.addEffect(new ClickFly(mp));
+		}
 	}
 
 
