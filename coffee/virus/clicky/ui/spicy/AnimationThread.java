@@ -78,13 +78,6 @@ class AnimationThread extends Thread {
 		final int sleepTarget = 50;
 		long lastFrame = System.currentTimeMillis() - sleepTarget;
 
-		// Test stuff: start
-		int x = 0;
-		int y = 80;
-		boolean xpos = true;
-		boolean ypos = true;
-		// Test stuff: end
-
 		while(running){
 			transferEffects();
 
@@ -106,18 +99,6 @@ class AnimationThread extends Thread {
 			}
 			effects.removeAll(toRemove);
 			toRemove = null;
-
-			// TODO
-			// Test stuff: start
-			int move = 5 * sleepTarget / (int)timeElapsed;
-			if(x > d.width - 40) xpos = false; else if(x < 0) xpos = true;
-			if(y > d.height - 40) ypos = false; else if(y < 0) ypos = true;
-			x = xpos ? x + move : x - move;
-			y = ypos ? y + move : y - move;
-			g.setColor(java.awt.Color.RED);
-			g.fillRect(x, y, 40, 40);
-			addEffect(new coffee.virus.clicky.effects.ClickFly(new java.awt.Point(x+20, y+20)));
-			// Test stuff: end
 
 			g.dispose();
 			drawTarget.setFrame(f);
