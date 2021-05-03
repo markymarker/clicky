@@ -40,6 +40,8 @@ public class SpicyUI implements Interfacer, Runnable {
 	Interacter interacter;
 	ActionHandler actionDude;
 
+	private int titleBarHeight;
+	private int winBorderWidth;
 	private JFrame window;
 	private DrawGlass glass;
 	private AnimationThread anim;
@@ -83,6 +85,9 @@ public class SpicyUI implements Interfacer, Runnable {
 		window.pack();
 		window.setVisible(true);
 
+		titleBarHeight = window.getInsets().top;
+		winBorderWidth = window.getInsets().left;
+
 		anim.start();
 		highlightClickButton(true);
 	}
@@ -124,6 +129,8 @@ public class SpicyUI implements Interfacer, Runnable {
 		switch(e.getAction()){
 		case UserEvent.ACTION_CLICK:
 			Point mp = window.getMousePosition();
+			mp.x -= winBorderWidth;
+			mp.y -= titleBarHeight;
 			if(mp != null) addEffect(new ClickFly(mp));
 			if(clickBHighlight.isEnabled()) highlightClickButton(false);
 		break;
