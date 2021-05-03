@@ -18,6 +18,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -73,7 +75,9 @@ public class SpicyUI implements Interfacer, Runnable {
 		window.add(display.init(), BorderLayout.NORTH);
 		window.add(controls.init(), BorderLayout.CENTER);
 
-		window.addWindowListener(new Windower());
+		Windower wlis = new Windower();
+		window.addWindowListener(wlis);
+		window.addComponentListener(wlis);
 		actionDude.registerEvents(window.getRootPane());
 
 		window.pack();
@@ -166,10 +170,30 @@ public class SpicyUI implements Interfacer, Runnable {
 // ///////////////////// //
 // WINDOW EVENT LISTENER //
 
-	private class Windower extends WindowAdapter {
+	private class Windower extends WindowAdapter implements ComponentListener {
+
+		/**
+		 * Listen for the window close event.
+		 * Notice when we need to perform cleanup, etc.
+		 */
 		public void windowClosed(WindowEvent e){
 			continueRunning = false;
 		}
+
+		/**
+		 * Listen for the window resize event.
+		 * Notice when we need to adjust positions, re-compute things, etc.
+		 */
+		public void componentResized(ComponentEvent e){
+			boolean pState = clickBHighlight.isEnabled();
+			clickBHighlight.setEnabled(false);
+			clickBHighlight = null;
+			highlightClickButton(pState);
+		}
+
+		public void componentHidden(ComponentEvent e){}
+		public void componentMoved(ComponentEvent e){}
+		public void componentShown(ComponentEvent e){}
 	}
 
 
