@@ -4,6 +4,7 @@ import coffee.virus.clicky.Scorecard;
 import coffee.virus.clicky.Interacter;
 import coffee.virus.clicky.UserEvent;
 
+import coffee.virus.clicky.effects.AssistFly;
 import coffee.virus.clicky.effects.ClickFly;
 import coffee.virus.clicky.effects.Highlight;
 
@@ -32,21 +33,20 @@ import javax.swing.JFrame;
  * More frilly than SimpleUI, maybe good for impressing the homies.
  * TODO
  */
-public class SpicyUI implements Interfacer, Runnable {
+public final class SpicyUI implements Interfacer, Runnable {
 
-	private boolean continueRunning = true;
+	private final DisplayArea display;
+	private final ControlArea controls;
 
+	final ActionHandler actionDude;
 	Scorecard scorecard;
 	Interacter interacter;
-	ActionHandler actionDude;
 
-	private int titleBarHeight;
-	private int winBorderWidth;
 	private JFrame window;
 	private DrawGlass glass;
 	private AnimationThread anim;
-	private DisplayArea display;
-	private ControlArea controls;
+
+	private boolean continueRunning = true;
 
 	private Highlight clickBHighlight = null;
 
@@ -85,8 +85,8 @@ public class SpicyUI implements Interfacer, Runnable {
 		window.pack();
 		window.setVisible(true);
 
-		titleBarHeight = window.getInsets().top;
-		winBorderWidth = window.getInsets().left;
+		//titleBarHeight = window.getInsets().top;
+		//winBorderWidth = window.getInsets().left;
 
 		anim.start();
 		highlightClickButton(true);
@@ -128,11 +128,20 @@ public class SpicyUI implements Interfacer, Runnable {
 
 		switch(e.getAction()){
 		case UserEvent.ACTION_CLICK:
-			Point mp = window.getMousePosition();
-			mp.x -= winBorderWidth;
-			mp.y -= titleBarHeight;
+			Point mp = getMousePosition();
 			if(mp != null) addEffect(new ClickFly(mp));
 			if(clickBHighlight.isEnabled()) highlightClickButton(false);
+		break;
+
+		case UserEvent.ACTION_ASSIST:
+			// Kind of just a test for now
+			// If keeping, probably really wanna rate limit or something
+			Point cbp = new Point();
+			Dimension cbd = new Dimension();
+			getClickButtonInfo(cbp, cbd);
+			cbp.x += cbd.width / 2;
+			cbp.y += cbd.height / 2;
+			addEffect(new AssistFly(cbp));
 		break;
 
 		case UserEvent.ACTION_PURCHASE:
@@ -154,15 +163,9 @@ public class SpicyUI implements Interfacer, Runnable {
 	private void highlightClickButton(boolean on){
 		if(clickBHighlight == null){
 			Point cbp = new Point();
-			Dimension cbs = new Dimension();
-			controls.whereClickButton(cbp, cbs);
-
-			Point cpos = new Point();
-			controls.whereYouAt(cpos);
-			cbp.x += cpos.x;
-			cbp.y += cpos.y;
-
-			clickBHighlight = new Highlight(cbp, cbs);
+			Dimension cbd = new Dimension();
+			getClickButtonInfo(cbp, cbd);
+			clickBHighlight = new Highlight(cbp, cbd);
 			clickBHighlight.setEnabled(false);
 		}
 
@@ -174,10 +177,40 @@ public class SpicyUI implements Interfacer, Runnable {
 	}
 
 
+// /////// //
+// HELPERS //
+
+	/**
+	 * Get the position and size of the click button, adjusted.
+	 * Adjusts to compensate for the positioning of the control panel.
+	 *
+	 * @param cbp The point to set position values into
+	 * @param cbd The dimension to set size values into
+	 * @return TRUE if success, FALSE if anything came back NULL
+	 */
+	private void getClickButtonInfo(Point cbp, Dimension cbd){
+		Point cpos = new Point();
+		controls.whereYouAt(cpos);
+		controls.whereClickButton(cbp, cbd);
+		cbp.x += cpos.x;
+		cbp.y += cpos.y;
+	}
+
+	/**
+	 * Get the current position of the mouse.
+	 * Gives position relative to the inner bounds of the window.
+	 *
+	 * @return Point position of the mouse, may be NULL
+	 */
+	private Point getMousePosition(){
+		return window.getRootPane().getMousePosition();
+	}
+
+
 // ///////////////////// //
 // WINDOW EVENT LISTENER //
 
-	private class Windower extends WindowAdapter implements ComponentListener {
+	private final class Windower extends WindowAdapter implements ComponentListener {
 
 		/**
 		 * Listen for the window close event.
@@ -207,7 +240,7 @@ public class SpicyUI implements Interfacer, Runnable {
 // ////////////////// //
 // PANE FOR ANIMATION //
 
-	class DrawGlass extends JComponent {
+	final class DrawGlass extends JComponent {
 
 		private Image frame;
 
