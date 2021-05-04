@@ -7,15 +7,16 @@ import java.awt.image.BufferedImage;
 
 
 /**
- * Clicks go flying.
- * This effect increases accessibility by providing a textual indicator for
- * when a click has occurred.
+ * Assists go flying.
+ * This effect gives the player the comforting reassurance of knowing
+ * something's got their back. Even if that something is just a bunch of cold
+ * robotic click assist machines.
  *
  * The way that position and movement is tracked is based around a (0, 0)
  * origin internally, then at the time of drawing, position is shifted to use
  * the point of emission as the origin.
  */
-public class ClickFly extends FlyBase {
+public class AssistFly extends FlyBase {
 
 	private static final BufferedImage imgProto;
 	private static final Dimension imgDim;
@@ -23,12 +24,12 @@ public class ClickFly extends FlyBase {
 
 
 	/**
-	 * I gueeeesss I can do some of the setup work, old man.
+	 * Ugh, do I have to do everything.
 	 */
 	static {
 		imgDim = new Dimension();
 		imgDimHalf = new Dimension();
-		imgProto = createText("Click!", imgDim, imgDimHalf);
+		imgProto = createText("Assist!", imgDim, imgDimHalf);
 	}
 
 
@@ -36,7 +37,7 @@ public class ClickFly extends FlyBase {
 	 * Special unique constructor.
 	 * @see FlyBase
 	 */
-	public ClickFly(Point emitFrom){
+	public AssistFly(Point emitFrom){
 		super(emitFrom, imgProto, imgDim, imgDimHalf);
 	}
 
