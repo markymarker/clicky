@@ -11,10 +11,6 @@ import java.awt.image.BufferedImage;
  * This effect gives the player the comforting reassurance of knowing
  * something's got their back. Even if that something is just a bunch of cold
  * robotic click assist machines.
- *
- * The way that position and movement is tracked is based around a (0, 0)
- * origin internally, then at the time of drawing, position is shifted to use
- * the point of emission as the origin.
  */
 public class AssistFly extends FlyBase {
 
@@ -35,7 +31,8 @@ public class AssistFly extends FlyBase {
 
 	/**
 	 * Special unique constructor.
-	 * @see FlyBase
+	 *
+	 * @param emitFrom The point where the event occurred
 	 */
 	public AssistFly(Point emitFrom){
 		super(emitFrom, imgProto, imgDim, imgDimHalf);

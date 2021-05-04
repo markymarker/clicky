@@ -96,11 +96,14 @@ public abstract class FlyBase implements Effect {
 	 * Does some constructing, as one might expect.
 	 *
 	 * @param emitFrom The point where the event occurred
+	 * @param imgProto The prototype image to use
+	 * @param imgDim The dimensions of the image prototype
+	 * @param imgDimHalf The half dimensions of the image prototype
 	 */
-	public FlyBase(Point emitFrom, BufferedImage p, Dimension d, Dimension h){
-		imgProto = p;
-		imgDim = d;
-		imgDimHalf = h;
+	public FlyBase(Point emitFrom, BufferedImage imgProto, Dimension imgDim, Dimension imgDimHalf){
+		this.imgProto = imgProto;
+		this.imgDim = imgDim;
+		this.imgDimHalf = imgDimHalf;
 
 		origin = new Point(
 			emitFrom.x - imgDimHalf.width,

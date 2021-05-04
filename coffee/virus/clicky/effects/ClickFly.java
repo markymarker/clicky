@@ -10,10 +10,6 @@ import java.awt.image.BufferedImage;
  * Clicks go flying.
  * This effect increases accessibility by providing a textual indicator for
  * when a click has occurred.
- *
- * The way that position and movement is tracked is based around a (0, 0)
- * origin internally, then at the time of drawing, position is shifted to use
- * the point of emission as the origin.
  */
 public class ClickFly extends FlyBase {
 
@@ -34,7 +30,8 @@ public class ClickFly extends FlyBase {
 
 	/**
 	 * Special unique constructor.
-	 * @see FlyBase
+	 *
+	 * @param emitFrom The point where the event occurred
 	 */
 	public ClickFly(Point emitFrom){
 		super(emitFrom, imgProto, imgDim, imgDimHalf);
