@@ -15,7 +15,6 @@ public class ClickFly extends FlyBase {
 
 	private static final BufferedImage imgProto;
 	private static final Dimension imgDim;
-	private static final Dimension imgDimHalf;
 
 
 	/**
@@ -23,8 +22,7 @@ public class ClickFly extends FlyBase {
 	 */
 	static {
 		imgDim = new Dimension();
-		imgDimHalf = new Dimension();
-		imgProto = createText("Click!", imgDim, imgDimHalf);
+		imgProto = createText("Click!", imgDim);
 	}
 
 
@@ -34,7 +32,7 @@ public class ClickFly extends FlyBase {
 	 * @param emitFrom The point where the event occurred
 	 */
 	public ClickFly(Point emitFrom){
-		super(emitFrom, imgProto, imgDim, imgDimHalf);
+		super(emitFrom, imgProto, imgDim);
 	}
 
 }

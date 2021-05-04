@@ -38,10 +38,9 @@ public abstract class FlyBase implements Effect {
 	 *
 	 * @param text The text to use
 	 * @param imgDim Where to store the dimensions of the generated image
-	 * @param imgDimHalf Where to store the half dimensions of the generated image
 	 * @return The generated image
 	 */
-	protected static final BufferedImage createText(String text, Dimension imgDim, Dimension imgDimHalf){
+	protected static final BufferedImage createText(String text, Dimension imgDim){
 		Font f = new Font(Font.SANS_SERIF, Font.BOLD, 14);
 
 		// Ugh...
@@ -55,10 +54,6 @@ public abstract class FlyBase implements Effect {
 		imgDim.setSize(
 			fm.stringWidth(text),
 			fm.getHeight()
-		);
-		imgDimHalf.setSize(
-			imgDim.width / 2,
-			imgDim.height / 2
 		);
 		BufferedImage imgProto = new BufferedImage(
 			imgDim.width,
@@ -81,7 +76,6 @@ public abstract class FlyBase implements Effect {
 
 	private final BufferedImage imgProto;
 	private final Dimension imgDim;
-	private final Dimension imgDimHalf;
 	private final Point origin;
 	private final Point position;
 	private final Point destination;
@@ -98,16 +92,14 @@ public abstract class FlyBase implements Effect {
 	 * @param emitFrom The point where the event occurred
 	 * @param imgProto The prototype image to use
 	 * @param imgDim The dimensions of the image prototype
-	 * @param imgDimHalf The half dimensions of the image prototype
 	 */
-	public FlyBase(Point emitFrom, BufferedImage imgProto, Dimension imgDim, Dimension imgDimHalf){
+	public FlyBase(Point emitFrom, BufferedImage imgProto, Dimension imgDim){
 		this.imgProto = imgProto;
 		this.imgDim = imgDim;
-		this.imgDimHalf = imgDimHalf;
 
 		origin = new Point(
-			emitFrom.x - imgDimHalf.width,
-			emitFrom.y - imgDimHalf.height
+			emitFrom.x - imgDim.width / 2,
+			emitFrom.y - imgDim.height / 2
 		);
 
 		position = new Point(0, 0);

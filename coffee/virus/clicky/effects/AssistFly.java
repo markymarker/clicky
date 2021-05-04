@@ -16,7 +16,6 @@ public class AssistFly extends FlyBase {
 
 	private static final BufferedImage imgProto;
 	private static final Dimension imgDim;
-	private static final Dimension imgDimHalf;
 
 
 	/**
@@ -24,8 +23,7 @@ public class AssistFly extends FlyBase {
 	 */
 	static {
 		imgDim = new Dimension();
-		imgDimHalf = new Dimension();
-		imgProto = createText("Assist!", imgDim, imgDimHalf);
+		imgProto = createText("Assist!", imgDim);
 	}
 
 
@@ -35,7 +33,7 @@ public class AssistFly extends FlyBase {
 	 * @param emitFrom The point where the event occurred
 	 */
 	public AssistFly(Point emitFrom){
-		super(emitFrom, imgProto, imgDim, imgDimHalf);
+		super(emitFrom, imgProto, imgDim);
 	}
 
 }
