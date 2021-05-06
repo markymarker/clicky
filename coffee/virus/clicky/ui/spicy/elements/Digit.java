@@ -25,7 +25,7 @@ public class Digit implements Effect {
 	/**
 	 * Have the production line pump out a shiny new digit display.
 	 *
-	 * @param d The initial value (0-10) to show
+	 * @param d The initial value (0-9) to show
 	 * @param size The desired size of the component
 	 * @param font The font to use in drawing the digit
 	 */
@@ -52,7 +52,7 @@ public class Digit implements Effect {
 	 * Valid values are 0-9. For any value outside this range, only the digit
 	 * from the ones place will be used.
 	 *
-	 * @param d The 0-10 digit to change this display to
+	 * @param d The 0-9 digit to change this display to
 	 */
 	public void changeTo(int d){
 		targetDigit = dontTrustAnyone(d);
@@ -60,7 +60,7 @@ public class Digit implements Effect {
 
 	/**
 	 * Update the display.
-	 * We'll pass along your message.
+	 * We'll pass along your request.
 	 */
 	public void repaint(){
 		canvas.repaint();
@@ -103,7 +103,7 @@ public class Digit implements Effect {
 
 	private final class DrawCanvas extends Canvas {
 
-		private Dimension size;
+		private final Dimension size;
 
 
 		public DrawCanvas(Dimension size){
