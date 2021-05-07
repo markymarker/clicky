@@ -11,6 +11,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 
+/**
+ * A swanky display digit.
+ * Shows a single digit and provides some pizazz when the digit is to be
+ * changed.
+ */
 public class Digit implements Effect {
 
 	private final DrawCanvas canvas;
@@ -24,6 +29,12 @@ public class Digit implements Effect {
 
 	/**
 	 * Have the production line pump out a shiny new digit display.
+	 * The reason for the size and font parameters is because digits are
+	 * probably always going to be put in groups. By having the creator
+	 * instantiate these and pass them to the individual digits, there is
+	 * an easy guarantee of consistency and lower overhead in terms of the
+	 * amount of crap that needs to get allocated and instantiated (assuming
+	 * the creator isn't doing something ridiculous, of course).
 	 *
 	 * @param d The initial value (0-9) to show
 	 * @param size The desired size of the component
@@ -66,10 +77,16 @@ public class Digit implements Effect {
 		canvas.repaint();
 	}
 
-	// TODO
-	// Not sure if Effect is appropriate for this, but going with it for
-	// testing and getting this off the ground
+	/**
+	 * @see Effect
+	 *
+	 * TODO
+	 * Not sure if Effect is appropriate for this, but going with it for
+	 * testing and getting this off the ground
+	 */
+	@Override
 	public boolean tick(long elapsed){ return true; }
+	@Override
 	public void draw(Graphics2D g){
 		if(digit == targetDigit) return;
 
@@ -101,6 +118,14 @@ public class Digit implements Effect {
 // ////////////// //
 // CANVAS ELEMENT //
 
+	private static final Color SEMI_RED = new Color(255, 0, 0, 180);
+	private static final Color SEMI_CYAN = new Color(0, 255, 255, 180);
+
+	/**
+	 * The element for bringing the digit to life.
+	 * This class extends canvas to provide the actual drawing capability for
+	 * a digit.
+	 */
 	private final class DrawCanvas extends Canvas {
 
 		private final Dimension size;
@@ -112,26 +137,37 @@ public class Digit implements Effect {
 			setPreferredSize(size);
 		}
 
+		/**
+		 * Paint the digit on the display.
+		 * This gives the digit a little bit of padding inside the canvas.
+		 * Hopefully you sized things right when setting up your digit!
+		 */
+		@Override
 		public void paint(Graphics g){
+			int vert = size.height - 2;
+
 			g.setColor(Color.GREEN);
 			g.setFont(digitFont);
 
 			if(digit != targetDigit){
-				// TODO: Cool static-y stuff and random flipping between digits
+				// Cool static-y stuff and random flipping between digits
+				// TODO: Even cooler?
 
-				g.setColor(Color.RED);
-				g.drawString("" + digit, 0, size.height - 2);
-				g.setColor(Color.CYAN);
-				g.drawString("" + targetDigit, 0, size.height - 2);
+				int r = (int)Math.floor(Math.random() * 3);
+				if(r == 1){
+					g.setColor(Color.WHITE);
+					g.drawString("S", 1, vert);  // "S" for Static!
+				} else {
+					g.setColor(r == 0 ? SEMI_RED : SEMI_CYAN);
+					g.drawString("" + digit, 1, vert);
+					g.setColor(r == 0 ? SEMI_CYAN : SEMI_RED);
+					g.drawString("" + targetDigit, 1, vert);
+				}
 			} else {
-				// TODO: Just draw the digit
+				// Just draw the digit
 
-				g.drawString("" + digit, 0, size.height - 2);
+				g.drawString("" + digit, 1, vert);
 			}
-
-			// Test stuff
-			g.setColor(Color.BLUE);
-			g.drawRect(0, 0, size.width - 1, size.height - 1);
 		}
 	}
 
